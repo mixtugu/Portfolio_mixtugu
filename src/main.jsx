@@ -1,122 +1,142 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import {
   ArrowUpRight,
+  Calendar,
   Code2,
+  GraduationCap,
+  Globe2,
   Github,
   Linkedin,
   Mail,
   MapPin,
-  Rocket,
+  Phone,
   Server,
   Sparkles,
 } from 'lucide-react';
+import { Header } from './Header';
+import { LOCALES } from './locales';
+import { siteConfig } from './siteConfig';
 import './styles.css';
 
-const projects = [
-  {
-    title: 'Commerce Admin',
-    description: '주문, 재고, 고객 데이터를 한 화면에서 관리하는 운영 대시보드.',
-    stack: ['React', 'TypeScript', 'TanStack Query'],
-  },
-  {
-    title: 'AI Resume Helper',
-    description: '이력서 문장을 분석하고 직무별 개선 제안을 제공하는 웹 서비스.',
-    stack: ['Next.js', 'OpenAI API', 'PostgreSQL'],
-  },
-  {
-    title: 'Realtime Chat',
-    description: '팀 협업을 위한 실시간 메시징과 알림 기능을 구현한 프로젝트.',
-    stack: ['React', 'Node.js', 'Socket.IO'],
-  },
-];
-
-const skills = ['React', 'JavaScript', 'TypeScript', 'Node.js', 'UI Engineering', 'REST API'];
+const experiences = ['Company Name', 'Frontend Team', 'Open Source Contributor'];
 
 function App() {
+  const [locale, setLocale] = useState('ko');
+  const [copiedContact, setCopiedContact] = useState('');
+  const t = LOCALES[locale];
+  const currentSiteConfig = siteConfig[locale] ?? siteConfig.ko;
+
+  const copyContactValue = async (key, value) => {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(value);
+    } else {
+      const textarea = document.createElement('textarea');
+      textarea.value = value;
+      textarea.setAttribute('readonly', '');
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+    }
+
+    setCopiedContact(key);
+    window.setTimeout(() => setCopiedContact(''), 1400);
+  };
+
+  useEffect(() => {
+    document.documentElement.lang = locale;
+  }, [locale]);
+
   return (
     <main className="page">
-      <nav className="nav" aria-label="주요 메뉴">
-        <a className="brand" href="#top">
-          <span className="brandMark">M</span>
-          <span>Mixtugu</span>
-        </a>
-        <div className="navLinks">
-          <a href="#projects">Projects</a>
-          <a href="#skills">Skills</a>
-          <a href="#contact">Contact</a>
-        </div>
-      </nav>
+      <Header locale={locale} onLocaleChange={setLocale} t={t} />
 
       <section id="top" className="hero">
-        <div className="heroCopy">
-          <p className="eyebrow">
-            <Sparkles size={16} />
-            Frontend Developer Portfolio
-          </p>
-          <h1>사용자 경험을 코드로 구체화하는 개발자</h1>
-          <p className="intro">
-            React 기반 인터페이스, API 연동, 반응형 UI를 중심으로 제품의 첫인상과
-            사용 흐름을 탄탄하게 만듭니다.
-          </p>
-          <div className="heroActions">
-            <a className="primaryButton" href="#projects">
-              프로젝트 보기
-              <ArrowUpRight size={18} />
-            </a>
-            <a className="secondaryButton" href="mailto:hello@example.com">
-              <Mail size={18} />
-              연락하기
-            </a>
-          </div>
-        </div>
-
-        <div className="profilePanel" aria-label="프로필 요약">
+        <div className="profilePanel" aria-label={t.profileLabel}>
           <div className="avatar">
             <Code2 size={54} />
           </div>
           <div>
-            <p className="profileName">Your Name</p>
-            <p className="profileRole">React Developer</p>
+            <p className="profileName">{currentSiteConfig.brandName}</p>
+            <p className="profileRole">{t.profile.role}</p>
           </div>
           <div className="profileMeta">
             <span>
               <MapPin size={16} />
-              Seoul, KR
+              {t.profile.location}
             </span>
             <span>
-              <Rocket size={16} />
-              Available for work
+              <GraduationCap size={16} />
+              {currentSiteConfig.schoolName}
             </span>
+            <span>
+              <Calendar size={16} />
+              {siteConfig.birthDate}
+            </span>
+            <span>
+              <Globe2 size={16} />
+              {t.profile.nationalityLabel}: {t.profile.nationalityValue}
+            </span>
+          </div>
+        </div>
+
+        <div className="heroCopy">
+          <p className="eyebrow">
+            <Sparkles size={16} />
+            {t.hero.eyebrow}
+          </p>
+          <h1>{t.hero.title}</h1>
+          <p className="intro">{t.hero.intro}</p>
+          <div className="heroActions">
+            <a className="primaryButton" href="#projects">
+              {t.hero.projectsCta}
+              <ArrowUpRight size={18} />
+            </a>
+            <a className="secondaryButton" href="mailto:hello@example.com">
+              <Mail size={18} />
+              {t.hero.contactCta}
+            </a>
           </div>
         </div>
       </section>
 
-      <section className="stats" aria-label="핵심 지표">
-        <article>
-          <strong>3+</strong>
-          <span>Production Projects</span>
-        </article>
-        <article>
-          <strong>2 yr</strong>
-          <span>Frontend Experience</span>
-        </article>
-        <article>
-          <strong>98%</strong>
-          <span>Responsive UI Focus</span>
-        </article>
+      <section className="stats" aria-label={t.statsLabel}>
+        {t.stats.map((stat) => (
+          <article key={stat.label}>
+            <strong>{stat.value}</strong>
+            <span>{stat.label}</span>
+          </article>
+        ))}
+      </section>
+
+      <section id="experience" className="section splitSection">
+        <div className="sectionHeader">
+          <p className="eyebrow">
+            <Code2 size={16} />
+            {t.sections.experienceEyebrow}
+          </p>
+          <h2>{t.sections.experience}</h2>
+        </div>
+        <div className="skillList">
+          {experiences.map((experience) => (
+            <span key={experience}>{experience}</span>
+          ))}
+        </div>
       </section>
 
       <section id="projects" className="section">
         <div className="sectionHeader">
           <p className="eyebrow">
             <Server size={16} />
-            Selected Work
+            {t.sections.selectedWork}
           </p>
-          <h2>프로젝트</h2>
+          <h2>{t.sections.projects}</h2>
         </div>
         <div className="projectGrid">
-          {projects.map((project) => (
+          {t.projects.map((project) => (
             <article className="projectCard" key={project.title}>
               <div>
                 <h3>{project.title}</h3>
@@ -132,37 +152,50 @@ function App() {
         </div>
       </section>
 
-      <section id="skills" className="section splitSection">
-        <div className="sectionHeader">
-          <p className="eyebrow">
-            <Code2 size={16} />
-            Tech Stack
-          </p>
-          <h2>기술 역량</h2>
-        </div>
-        <div className="skillList">
-          {skills.map((skill) => (
-            <span key={skill}>{skill}</span>
-          ))}
-        </div>
-      </section>
-
       <section id="contact" className="contact">
         <div>
-          <p className="eyebrow">Contact</p>
-          <h2>함께 만들 프로젝트가 있나요?</h2>
-          <p>포트폴리오 내용은 실제 이름, 이메일, 프로젝트 링크로 바로 교체할 수 있습니다.</p>
+          <p className="eyebrow">{t.sections.contact}</p>
+          <h2>{t.contact.title}</h2>
+          <p>{t.contact.body}</p>
         </div>
-        <div className="socials">
-          <a href="mailto:hello@example.com" aria-label="이메일">
-            <Mail size={20} />
-          </a>
-          <a href="https://github.com/" aria-label="깃허브">
-            <Github size={20} />
-          </a>
-          <a href="https://linkedin.com/" aria-label="링크드인">
-            <Linkedin size={20} />
-          </a>
+        <div className="contactSide">
+          <div className="contactDetails">
+            <button
+              aria-label="Copy Japan phone number"
+              onClick={() => copyContactValue('japanPhone', siteConfig.contact.japanPhone)}
+              type="button"
+            >
+              <Phone size={18} />
+              <span>Japan: {siteConfig.contact.japanPhone}</span>
+              {copiedContact === 'japanPhone' && <small>Copied</small>}
+            </button>
+            <button
+              aria-label="Copy Korea phone number"
+              onClick={() => copyContactValue('koreaPhone', siteConfig.contact.koreaPhone)}
+              type="button"
+            >
+              <Phone size={18} />
+              <span>Korea: {siteConfig.contact.koreaPhone}</span>
+              {copiedContact === 'koreaPhone' && <small>Copied</small>}
+            </button>
+            <button
+              aria-label="Copy email address"
+              onClick={() => copyContactValue('email', siteConfig.contact.email)}
+              type="button"
+            >
+              <Mail size={18} />
+              <span>Email: {siteConfig.contact.email}</span>
+              {copiedContact === 'email' && <small>Copied</small>}
+            </button>
+          </div>
+          <div className="socials">
+            <a href={`mailto:${siteConfig.contact.email}`} aria-label={t.contact.email}>
+              <Mail size={20} />
+            </a>
+            <a href="https://github.com/" aria-label={t.contact.github}>
+              <Github size={20} />
+            </a>
+          </div>
         </div>
       </section>
     </main>

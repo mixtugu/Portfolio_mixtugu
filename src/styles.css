@@ -1,6 +1,12 @@
 :root {
-  color: #16201d;
-  background: #f5f7f1;
+  color: #050505;
+  background: #fbfcfc;
+  --color-main: #39c5bb;
+  --color-main-soft: #dff8f5;
+  --color-black: #050505;
+  --color-pink: #fff7fa;
+  --color-red: #e73535;
+  --color-muted: #5d6463;
   font-family:
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   line-height: 1.5;
@@ -35,13 +41,13 @@ a {
   position: sticky;
   top: 0;
   z-index: 10;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  justify-content: space-between;
   gap: 24px;
   padding: 18px clamp(20px, 5vw, 72px);
-  border-bottom: 1px solid rgba(22, 32, 29, 0.1);
-  background: rgba(245, 247, 241, 0.86);
+  border-bottom: 1px solid rgba(5, 5, 5, 0.1);
+  background: rgba(251, 252, 252, 0.92);
   backdrop-filter: blur(18px);
 }
 
@@ -49,6 +55,7 @@ a {
 .navLinks,
 .eyebrow,
 .heroActions,
+.localeSwitcher,
 .profileMeta span,
 .socials {
   display: flex;
@@ -57,6 +64,7 @@ a {
 
 .brand {
   gap: 10px;
+  justify-self: start;
   font-weight: 800;
 }
 
@@ -65,23 +73,61 @@ a {
   width: 34px;
   height: 34px;
   place-items: center;
+  border: 1px solid var(--color-main);
   border-radius: 8px;
-  color: white;
-  background: #1f6f5b;
+  color: var(--color-black);
+  background: var(--color-main-soft);
 }
 
 .navLinks {
   gap: clamp(14px, 3vw, 34px);
-  color: #51605a;
+  justify-self: center;
+  color: var(--color-muted);
   font-size: 0.95rem;
+}
+
+.localeSwitcher {
+  gap: 4px;
+  justify-self: end;
+  padding: 4px;
+  border: 1px solid rgba(5, 5, 5, 0.12);
+  border-radius: 8px;
+  background: #fff;
+}
+
+.localeSwitcher button {
+  appearance: none;
+  width: 74px;
+  min-height: 34px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 0 10px;
+  color: var(--color-muted);
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 800;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.localeSwitcher button.active {
+  border-color: var(--color-main);
+  color: var(--color-black);
+  background: var(--color-main-soft);
+}
+
+.localeSwitcher button:hover {
+  border-color: var(--color-main);
 }
 
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+  grid-template-columns: minmax(280px, 0.8fr) minmax(0, 1.2fr);
   gap: clamp(36px, 6vw, 86px);
   align-items: center;
-  padding: clamp(56px, 9vw, 112px) clamp(20px, 5vw, 72px) 44px;
+  padding: clamp(28px, 5vw, 56px) clamp(20px, 5vw, 72px) 44px;
 }
 
 .heroCopy {
@@ -91,7 +137,7 @@ a {
 .eyebrow {
   gap: 8px;
   margin: 0 0 16px;
-  color: #1f6f5b;
+  color: var(--color-red);
   font-size: 0.82rem;
   font-weight: 800;
   letter-spacing: 0;
@@ -127,7 +173,7 @@ h3 {
 
 .intro {
   max-width: 620px;
-  color: #51605a;
+  color: var(--color-muted);
   font-size: clamp(1.05rem, 2vw, 1.25rem);
 }
 
@@ -151,11 +197,11 @@ h3 {
 
 .primaryButton {
   color: #fff;
-  background: #16201d;
+  background: var(--color-black);
 }
 
 .secondaryButton {
-  border: 1px solid rgba(22, 32, 29, 0.18);
+  border: 1px solid rgba(5, 5, 5, 0.18);
   background: #fff;
 }
 
@@ -165,12 +211,12 @@ h3 {
   justify-items: start;
   min-height: 420px;
   padding: 34px;
-  border: 1px solid rgba(22, 32, 29, 0.12);
+  border: 1px solid rgba(57, 197, 187, 0.55);
   border-radius: 8px;
   background:
-    linear-gradient(135deg, rgba(31, 111, 91, 0.08), rgba(224, 91, 73, 0.1)),
+    linear-gradient(135deg, rgba(223, 248, 245, 0.95), rgba(231, 53, 53, 0.08)),
     #ffffff;
-  box-shadow: 0 24px 70px rgba(22, 32, 29, 0.12);
+  box-shadow: 0 24px 70px rgba(5, 5, 5, 0.12);
 }
 
 .avatar {
@@ -178,11 +224,12 @@ h3 {
   width: min(100%, 220px);
   aspect-ratio: 1;
   place-items: center;
+  border: 1px solid var(--color-main);
   border-radius: 8px;
-  color: #f8fbf7;
+  color: var(--color-black);
   background:
     linear-gradient(145deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0)),
-    #1f6f5b;
+    var(--color-main-soft);
 }
 
 .profileName {
@@ -192,29 +239,37 @@ h3 {
 }
 
 .profileRole {
-  color: #51605a;
+  color: var(--color-muted);
 }
 
 .profileMeta {
   display: grid;
   gap: 10px;
-  color: #51605a;
+  color: var(--color-muted);
 }
 
 .profileMeta span {
+  align-items: flex-start;
   gap: 8px;
+  white-space: pre-line;
+}
+
+.profileMeta svg {
+  flex: 0 0 auto;
+  margin-top: 3px;
 }
 
 .stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  border-top: 1px solid rgba(22, 32, 29, 0.1);
-  border-bottom: 1px solid rgba(22, 32, 29, 0.1);
+  border-top: 1px solid rgba(5, 5, 5, 0.1);
+  border-bottom: 1px solid rgba(5, 5, 5, 0.1);
+  background: #fff;
 }
 
 .stats article {
   padding: 28px clamp(20px, 5vw, 72px);
-  border-right: 1px solid rgba(22, 32, 29, 0.1);
+  border-right: 1px solid rgba(5, 5, 5, 0.1);
 }
 
 .stats article:last-child {
@@ -228,7 +283,7 @@ h3 {
 }
 
 .stats span {
-  color: #51605a;
+  color: var(--color-muted);
 }
 
 .section,
@@ -253,14 +308,14 @@ h3 {
   flex-direction: column;
   justify-content: space-between;
   padding: 24px;
-  border: 1px solid rgba(22, 32, 29, 0.12);
+  border: 1px solid rgba(5, 5, 5, 0.12);
   border-radius: 8px;
   background: #fff;
 }
 
 .projectCard p,
 .contact p {
-  color: #51605a;
+  color: var(--color-muted);
 }
 
 .tags,
@@ -272,11 +327,11 @@ h3 {
 
 .tags span,
 .skillList span {
-  border: 1px solid rgba(31, 111, 91, 0.2);
+  border: 1px solid var(--color-main);
   border-radius: 8px;
   padding: 8px 10px;
-  color: #1f6f5b;
-  background: rgba(31, 111, 91, 0.06);
+  color: var(--color-black);
+  background: var(--color-main-soft);
   font-size: 0.9rem;
   font-weight: 700;
 }
@@ -286,7 +341,7 @@ h3 {
   grid-template-columns: 0.8fr 1.2fr;
   gap: 32px;
   align-items: start;
-  background: #e9efe6;
+  background: linear-gradient(180deg, #fff, var(--color-pink));
 }
 
 .skillList {
@@ -295,8 +350,8 @@ h3 {
 
 .skillList span {
   padding: 14px 16px;
-  color: #16201d;
-  background: #fff;
+  color: var(--color-black);
+  background: var(--color-main-soft);
 }
 
 .contact {
@@ -304,7 +359,7 @@ h3 {
   align-items: center;
   justify-content: space-between;
   gap: 30px;
-  background: #16201d;
+  background: var(--color-black);
   color: white;
 }
 
@@ -312,6 +367,59 @@ h3 {
   max-width: 580px;
   margin-bottom: 0;
   color: rgba(255, 255, 255, 0.74);
+}
+
+.contactSide {
+  display: grid;
+  gap: 18px;
+  justify-items: end;
+}
+
+.contactDetails {
+  display: grid;
+  gap: 8px;
+  min-width: min(100%, 320px);
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.contactDetails button {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 8px;
+  color: rgba(255, 255, 255, 0.84);
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.95rem;
+  text-align: left;
+}
+
+.contactDetails button:hover,
+.contactDetails button:focus-visible {
+  border-color: rgba(57, 197, 187, 0.9);
+  outline: 0;
+}
+
+.contactDetails svg {
+  flex: 0 0 auto;
+}
+
+.contactDetails span {
+  white-space: nowrap;
+}
+
+.contactDetails small {
+  color: var(--color-main-soft);
+  font-size: 0.76rem;
+  font-weight: 800;
 }
 
 .socials {
@@ -330,8 +438,18 @@ h3 {
 
 @media (max-width: 860px) {
   .nav {
-    align-items: flex-start;
-    flex-direction: column;
+    grid-template-columns: 1fr;
+    justify-items: stretch;
+  }
+
+  .brand,
+  .navLinks,
+  .localeSwitcher {
+    justify-self: stretch;
+  }
+
+  .localeSwitcher {
+    flex-wrap: wrap;
   }
 
   .hero,
@@ -350,7 +468,7 @@ h3 {
 
   .stats article {
     border-right: 0;
-    border-bottom: 1px solid rgba(22, 32, 29, 0.1);
+    border-bottom: 1px solid rgba(5, 5, 5, 0.1);
   }
 
   .stats article:last-child {
@@ -361,12 +479,31 @@ h3 {
     align-items: flex-start;
     flex-direction: column;
   }
+
+  .contactSide {
+    justify-items: start;
+    width: 100%;
+  }
+
+  .contactDetails {
+    width: 100%;
+  }
 }
 
 @media (max-width: 520px) {
-  .navLinks {
-    width: 100%;
+  .navLinks,
+  .localeSwitcher {
     justify-content: space-between;
+  }
+
+  .localeSwitcher button {
+    flex: 1;
+    padding: 0 8px;
+  }
+
+  .contactDetails span {
+    white-space: normal;
+    word-break: break-word;
   }
 
   h1 {
