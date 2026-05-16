@@ -11,10 +11,14 @@ import {
   SiPrisma,
   SiReact,
   SiReactquery,
+  SiRender,
   SiSocketdotio,
   SiSupabase,
+  SiSwift,
   SiThreedotjs,
   SiTypescript,
+  SiUnity,
+  SiVercel,
 } from 'react-icons/si';
 
 export const techStacks = {
@@ -58,10 +62,25 @@ export const techStacks = {
     color: '#050505',
     Icon: SiIos,
   },
+  ios: {
+    name: 'iOS',
+    color: '#050505',
+    Icon: SiIos,
+  },
+  swift: {
+    name: 'Swift',
+    color: '#f05138',
+    Icon: SiSwift,
+  },
   threejs: {
     name: 'Three.js',
     color: '#050505',
     Icon: SiThreedotjs,
+  },
+  unity: {
+    name: 'Unity',
+    color: '#050505',
+    Icon: SiUnity,
   },
   nextjs: {
     name: 'Next.js',
@@ -87,6 +106,16 @@ export const techStacks = {
     name: 'Supabase',
     color: '#3ecf8e',
     Icon: SiSupabase,
+  },
+  render: {
+    name: 'Render',
+    color: '#46e3b7',
+    Icon: SiRender,
+  },
+  vercel: {
+    name: 'Vercel',
+    color: '#050505',
+    Icon: SiVercel,
   },
   nodejs: {
     name: 'Node.js',
