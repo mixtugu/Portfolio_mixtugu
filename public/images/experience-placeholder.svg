@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" role="img" aria-labelledby="title desc">
+  <title id="title">Experience placeholder</title>
+  <desc id="desc">A simple placeholder image for experience and award items.</desc>
+  <rect width="640" height="420" fill="#dff8f5"/>
+  <rect x="42" y="42" width="556" height="336" rx="18" fill="#fff" stroke="#39c5bb" stroke-width="4"/>
+  <path d="M320 112l30 61 67 10-49 47 12 67-60-32-60 32 12-67-49-47 67-10 30-61z" fill="#39c5bb"/>
+  <rect x="180" y="318" width="280" height="18" rx="9" fill="#050505" opacity=".78"/>
+</svg>

@@ -5,6 +5,7 @@ export const LOCALES = {
     profileLabel: '프로필 요약',
     statsLabel: '핵심 지표',
     nav: {
+      top: '톱',
       experience: '경험 및 수상',
       projects: '프로젝트',
       contact: '연락',
@@ -34,24 +35,9 @@ export const LOCALES = {
       selectedWork: 'Selected Work',
       projects: '프로젝트',
       contact: 'Contact',
+      moreExperiences: '더 보기',
+      collapseExperiences: '접기',
     },
-    projects: [
-      {
-        title: 'Commerce Admin',
-        description: '주문, 재고, 고객 데이터를 한 화면에서 관리하는 운영 대시보드.',
-        stack: ['React', 'TypeScript', 'TanStack Query'],
-      },
-      {
-        title: 'AI Resume Helper',
-        description: '이력서 문장을 분석하고 직무별 개선 제안을 제공하는 웹 서비스.',
-        stack: ['Next.js', 'OpenAI API', 'PostgreSQL'],
-      },
-      {
-        title: 'Realtime Chat',
-        description: '팀 협업을 위한 실시간 메시징과 알림 기능을 구현한 프로젝트.',
-        stack: ['React', 'Node.js', 'Socket.IO'],
-      },
-    ],
     contact: {
       title: '함께 만들 프로젝트가 있나요?',
       body: '포트폴리오 내용은 실제 이름, 이메일, 프로젝트 링크로 바로 교체할 수 있습니다.',
@@ -66,6 +52,7 @@ export const LOCALES = {
     profileLabel: 'Profile summary',
     statsLabel: 'Key metrics',
     nav: {
+      top: 'Top',
       experience: 'Experience & Awards',
       projects: 'Projects',
       contact: 'Contact',
@@ -95,24 +82,9 @@ export const LOCALES = {
       selectedWork: 'Selected Work',
       projects: 'Projects',
       contact: 'Contact',
+      moreExperiences: 'Show more',
+      collapseExperiences: 'Show less',
     },
-    projects: [
-      {
-        title: 'Commerce Admin',
-        description: 'An operations dashboard for orders, inventory, and customer data in one view.',
-        stack: ['React', 'TypeScript', 'TanStack Query'],
-      },
-      {
-        title: 'AI Resume Helper',
-        description: 'A web service that analyzes resume copy and suggests job-specific improvements.',
-        stack: ['Next.js', 'OpenAI API', 'PostgreSQL'],
-      },
-      {
-        title: 'Realtime Chat',
-        description: 'A project with realtime messaging and notifications for team collaboration.',
-        stack: ['React', 'Node.js', 'Socket.IO'],
-      },
-    ],
     contact: {
       title: 'Have a project to build together?',
       body: 'You can replace this portfolio content with your real name, email, and project links.',
@@ -127,6 +99,7 @@ export const LOCALES = {
     profileLabel: 'プロフィール概要',
     statsLabel: '主要指標',
     nav: {
+      top: 'トップ',
       experience: '経験・受賞',
       projects: 'プロジェクト',
       contact: '連絡先',
@@ -156,24 +129,9 @@ export const LOCALES = {
       selectedWork: 'Selected Work',
       projects: 'プロジェクト',
       contact: 'Contact',
+      moreExperiences: 'もっと見る',
+      collapseExperiences: '閉じる',
     },
-    projects: [
-      {
-        title: 'Commerce Admin',
-        description: '注文、在庫、顧客データをひとつの画面で管理する運用ダッシュボード。',
-        stack: ['React', 'TypeScript', 'TanStack Query'],
-      },
-      {
-        title: 'AI Resume Helper',
-        description: '履歴書の文章を分析し、職種別の改善提案を行うWebサービス。',
-        stack: ['Next.js', 'OpenAI API', 'PostgreSQL'],
-      },
-      {
-        title: 'Realtime Chat',
-        description: 'チーム協業向けにリアルタイムメッセージと通知機能を実装したプロジェクト。',
-        stack: ['React', 'Node.js', 'Socket.IO'],
-      },
-    ],
     contact: {
       title: '一緒に作りたいプロジェクトはありますか？',
       body: 'ポートフォリオの内容は、実際の名前、メール、プロジェクトリンクにすぐ差し替えられます。',

@@ -1,9 +1,8 @@
 export const siteConfig = {
   birthDate: '2000.08.31',
   contact: {
-    japanPhone: '+81 00-0000-0000',
-    koreaPhone: '+82 00-0000-0000',
-    email: 'hello@example.com',
+    japanPhone: '+81 80-7561-0976',
+    email: 'timmy0079@gmail.com',
   },
   ko: {
     brandName: '이서정',

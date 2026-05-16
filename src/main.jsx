@@ -13,19 +13,48 @@ import {
   Phone,
   Server,
   Sparkles,
+  Trophy,
 } from 'lucide-react';
+import { experienceItems } from './data/experienceItems';
+import { LOCALES } from './data/locales';
+import { projectItems } from './data/projectItems';
+import { siteConfig } from './data/siteConfig';
+import { techStacks } from './data/techStacks';
 import { Header } from './Header';
-import { LOCALES } from './locales';
-import { siteConfig } from './siteConfig';
 import './styles.css';
 
-const experiences = ['Company Name', 'Frontend Team', 'Open Source Contributor'];
+function TechTag({ stackId }) {
+  const stack = techStacks[stackId] ?? {
+    name: stackId,
+    color: '#39c5bb',
+  };
+  const Icon = stack.Icon;
+
+  return (
+    <span style={{ '--tag-color': stack.color }} title={stack.name}>
+      {Icon && <Icon aria-hidden="true" size={14} />}
+      {stack.name}
+    </span>
+  );
+}
 
 function App() {
   const [locale, setLocale] = useState('ko');
   const [copiedContact, setCopiedContact] = useState('');
+  const [activeExperiencePhotoIndex, setActiveExperiencePhotoIndex] = useState(0);
+  const [showAllExperiences, setShowAllExperiences] = useState(false);
   const t = LOCALES[locale];
   const currentSiteConfig = siteConfig[locale] ?? siteConfig.ko;
+  const experienceGalleryItems = experienceItems.flatMap((experience) => {
+    const photos = experience.photos?.length ? experience.photos : [experience.photo];
+
+    return photos.map((photo, photoIndex) => ({
+      key: `${experience.title}-${photoIndex}`,
+      src: photo,
+      title: experience.title,
+    }));
+  });
+  const activeExperiencePhoto = experienceGalleryItems[activeExperiencePhotoIndex];
 
   const copyContactValue = async (key, value) => {
     if (navigator.clipboard?.writeText) {
@@ -50,6 +79,20 @@ function App() {
     document.documentElement.lang = locale;
   }, [locale]);
 
+  useEffect(() => {
+    if (experienceGalleryItems.length <= 1) {
+      return undefined;
+    }
+
+    const intervalId = window.setInterval(() => {
+      setActiveExperiencePhotoIndex((currentIndex) => (
+        currentIndex + 1
+      ) % experienceGalleryItems.length);
+    }, 3200);
+
+    return () => window.clearInterval(intervalId);
+  }, [experienceGalleryItems.length]);
+
   return (
     <main className="page">
       <Header locale={locale} onLocaleChange={setLocale} t={t} />
@@ -57,29 +100,31 @@ function App() {
       <section id="top" className="hero">
         <div className="profilePanel" aria-label={t.profileLabel}>
           <div className="avatar">
-            <Code2 size={54} />
+            <img src="/images/face.jpg" alt="" />
           </div>
-          <div>
-            <p className="profileName">{currentSiteConfig.brandName}</p>
-            <p className="profileRole">{t.profile.role}</p>
-          </div>
-          <div className="profileMeta">
-            <span>
-              <MapPin size={16} />
-              {t.profile.location}
-            </span>
-            <span>
-              <GraduationCap size={16} />
-              {currentSiteConfig.schoolName}
-            </span>
-            <span>
-              <Calendar size={16} />
-              {siteConfig.birthDate}
-            </span>
-            <span>
-              <Globe2 size={16} />
-              {t.profile.nationalityLabel}: {t.profile.nationalityValue}
-            </span>
+          <div className="profileDetails">
+            <div>
+              <p className="profileName">{currentSiteConfig.brandName}</p>
+              <p className="profileRole">{t.profile.role}</p>
+            </div>
+            <div className="profileMeta">
+              <span>
+                <MapPin size={16} />
+                {t.profile.location}
+              </span>
+              <span>
+                <GraduationCap size={16} />
+                {currentSiteConfig.schoolName}
+              </span>
+              <span>
+                <Calendar size={16} />
+                {siteConfig.birthDate}
+              </span>
+              <span>
+                <Globe2 size={16} />
+                {t.profile.nationalityLabel}: {t.profile.nationalityValue}
+              </span>
+            </div>
           </div>
         </div>
 
@@ -95,7 +140,7 @@ function App() {
               {t.hero.projectsCta}
               <ArrowUpRight size={18} />
             </a>
-            <a className="secondaryButton" href="mailto:hello@example.com">
+            <a className="secondaryButton" href={`mailto:${siteConfig.contact.email}`}>
               <Mail size={18} />
               {t.hero.contactCta}
             </a>
@@ -119,11 +164,81 @@ function App() {
             {t.sections.experienceEyebrow}
           </p>
           <h2>{t.sections.experience}</h2>
+          {activeExperiencePhoto && (
+              <div className="experienceGallery" aria-label="Experience photos">
+                <div className="experienceGalleryPreview">
+                  <img key={activeExperiencePhoto.key} src={activeExperiencePhoto.src} alt="" />
+                </div>
+              <div className="experienceGalleryGrid">
+                {experienceGalleryItems.map((item, index) => (
+                  <button
+                    aria-label={`Show ${item.title}`}
+                    aria-pressed={activeExperiencePhotoIndex === index}
+                    className={activeExperiencePhotoIndex === index ? 'active' : ''}
+                    key={item.key}
+                    onClick={() => setActiveExperiencePhotoIndex(index)}
+                    type="button"
+                  >
+                    <img src={item.src} alt="" />
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
-        <div className="skillList">
-          {experiences.map((experience) => (
-            <span key={experience}>{experience}</span>
-          ))}
+        <div>
+          <div className={`experienceList ${showAllExperiences ? 'expanded' : 'collapsed'}`}>
+            {experienceItems.map((experience) => (
+              <article className="experienceCard" key={`${experience.title}-${experience.date}`}>
+                <img src={experience.photo} alt="" />
+                <div className="experienceCardBody">
+                  <div className="experienceCardHeader">
+                    <div>
+                      <div className="experienceMetaLine">
+                        <time dateTime={experience.date}>{experience.date}</time>
+                        {experience.isAwarded && (
+                          <span className="awardBadge">
+                            <Trophy aria-hidden="true" size={14} />
+                            {experience.awardLabel}
+                          </span>
+                        )}
+                      </div>
+                      <h3>{experience.title}</h3>
+                    </div>
+                    {experience.projectLink ? (
+                      <a
+                        className="relatedProjectButton"
+                        href={experience.projectLink}
+                        rel="noreferrer"
+                        target="_blank"
+                      >
+                        <ArrowUpRight size={16} />
+                      </a>
+                    ) : (
+                      <button className="relatedProjectButton" disabled type="button">
+                        <ArrowUpRight size={16} />
+                      </button>
+                    )}
+                  </div>
+                  <p>{experience.description}</p>
+                  <div className="tags">
+                    {experience.stack.map((item) => (
+                      <TechTag key={item} stackId={item} />
+                    ))}
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+          {experienceItems.length > 3 && (
+            <button
+              className={`experienceToggleButton ${showAllExperiences ? 'sticky' : ''}`}
+              onClick={() => setShowAllExperiences((currentValue) => !currentValue)}
+              type="button"
+            >
+              {showAllExperiences ? t.sections.collapseExperiences : t.sections.moreExperiences}
+            </button>
+          )}
         </div>
       </section>
 
@@ -136,16 +251,18 @@ function App() {
           <h2>{t.sections.projects}</h2>
         </div>
         <div className="projectGrid">
-          {t.projects.map((project) => (
-            <article className="projectCard" key={project.title}>
-              <div>
+          {projectItems.map((project) => (
+            <article className="projectCard" key={`${project.title}-${project.date}`}>
+              <img src={project.photo} alt="" />
+              <div className="projectCardBody">
+                <time dateTime={project.date}>{project.date}</time>
                 <h3>{project.title}</h3>
                 <p>{project.description}</p>
-              </div>
-              <div className="tags">
-                {project.stack.map((item) => (
-                  <span key={item}>{item}</span>
-                ))}
+                <div className="tags">
+                  {project.stack.map((item) => (
+                    <TechTag key={item} stackId={item} />
+                  ))}
+                </div>
               </div>
             </article>
           ))}
@@ -167,16 +284,7 @@ function App() {
             >
               <Phone size={18} />
               <span>Japan: {siteConfig.contact.japanPhone}</span>
-              {copiedContact === 'japanPhone' && <small>Copied</small>}
-            </button>
-            <button
-              aria-label="Copy Korea phone number"
-              onClick={() => copyContactValue('koreaPhone', siteConfig.contact.koreaPhone)}
-              type="button"
-            >
-              <Phone size={18} />
-              <span>Korea: {siteConfig.contact.koreaPhone}</span>
-              {copiedContact === 'koreaPhone' && <small>Copied</small>}
+              <small aria-hidden={copiedContact !== 'japanPhone'}>Copied</small>
             </button>
             <button
               aria-label="Copy email address"
@@ -185,7 +293,7 @@ function App() {
             >
               <Mail size={18} />
               <span>Email: {siteConfig.contact.email}</span>
-              {copiedContact === 'email' && <small>Copied</small>}
+              <small aria-hidden={copiedContact !== 'email'}>Copied</small>
             </button>
           </div>
           <div className="socials">
