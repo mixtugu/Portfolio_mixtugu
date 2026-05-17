@@ -12,7 +12,7 @@ export const LOCALES = {
     },
     hero: {
       eyebrow: 'XR · Web · Data Engineering Portfolio',
-      title: 'XR, Web, 데이터를 연결하는 엔지니어',
+      title: 'XR, Web, 데이터를\n연결하는 엔지니어',
       intro:
         '도쿄대학교 학제정보학부에서 XR·AR 시스템, 웹 애플리케이션, 데이터 기반 아카이브를 연구하고 개발합니다. 공간 경험과 데이터를 웹 기술로 연결하여, 사람과 정보가 새롭게 만나는 인터랙티브 시스템을 만들어 갑니다.',
       projectsCta: '프로젝트 보기',
@@ -24,23 +24,24 @@ export const LOCALES = {
       nationalityLabel: '국적',
       nationalityValue: '대한민국',
     },
-    stats: [
-      { value: '2+', label: '수상 경력' },
-      { value: 'NHK', label: '방송 취재' },
-      { value: 'XR · Web · Data', label: '핵심 기술 영역' },
-    ],
+    stats: {
+      projects: '프로젝트',
+      experiences: '경험 및 활동',
+      coreExpertise: '핵심 기술 영역',
+    },
     sections: {
       experienceEyebrow: 'Experience & Awards',
       experience: '경험 및 수상',
       selectedWork: 'Selected Work',
       projects: '프로젝트',
+      projectNote: '일부 프로젝트는 활성화되어 있지 않는 경우가 있습니다.',
       contact: 'Contact',
       moreExperiences: '더 보기',
       collapseExperiences: '접기',
     },
     contact: {
-      title: '함께 만들어갈 프로젝트가 있나요?',
-      body: 'XR · AR, 웹 애플리케이션, 데이터 시각화와 아카이브 시스템 등 기술 기반 프로젝트 협업이나 연구 제안은 언제든지 환영합니다.',
+      title: '함께하시고 싶은 분은 언제든지 연락주세요',
+      body: 'XR · AR, 웹 애플리케이션, 데이터 시각화와 아카이브 시스템을 중심으로 연구, 개발, 협업 제안을 받고 있습니다.',
       email: '이메일',
       github: '깃허브',
       linkedin: '링크드인',
@@ -59,7 +60,7 @@ export const LOCALES = {
     },
     hero: {
       eyebrow: 'XR · Web · Data Engineering Portfolio',
-      title: 'Engineer connecting XR, Web, and data',
+      title: 'Engineer connecting\nXR, Web, and data',
       intro:
         'Graduate student at UTokyo\'s Interfaculty Initiative in Information Studies. I build XR/AR systems, web applications, and data-driven archives that connect spatial experiences, data, and real-world contexts.',
       projectsCta: 'View projects',
@@ -71,23 +72,24 @@ export const LOCALES = {
       nationalityLabel: 'Nationality',
       nationalityValue: 'Republic of Korea',
     },
-    stats: [
-      { value: '2+', label: 'Awards Won' },
-      { value: 'NHK', label: 'TV Featured' },
-      { value: 'XR · Web · Data', label: 'Core Expertise' },
-    ],
+    stats: {
+      projects: 'Projects',
+      experiences: 'Experiences',
+      coreExpertise: 'Core Expertise',
+    },
     sections: {
       experienceEyebrow: 'Experience & Awards',
       experience: 'Experience & Awards',
       selectedWork: 'Selected Work',
       projects: 'Projects',
+      projectNote: 'Some projects may not be currently active.',
       contact: 'Contact',
       moreExperiences: 'Show more',
       collapseExperiences: 'Show less',
     },
     contact: {
-      title: 'Have a project to explore together?',
-      body: 'Open to collaboration on XR/AR systems, web applications, data visualization, and archive platforms. Research proposals and technical partnerships are always welcome.',
+      title: 'Please feel free to contact me anytime\nif you would like to collaborate.',
+      body: 'I am open to research, development, and collaboration opportunities around XR/AR systems, web applications, data visualization, and archive platforms.',
       email: 'Email',
       github: 'GitHub',
       linkedin: 'LinkedIn',
@@ -106,7 +108,7 @@ export const LOCALES = {
     },
     hero: {
       eyebrow: 'XR · Web · Data Engineering Portfolio',
-      title: 'XR・Web・データをつなぐエンジニア',
+      title: 'XR・Web・データを\nつなぐエンジニア',
       intro:
         '東京大学学際情報学府で、XR・ARシステム、Webアプリケーション、データ駆動型アーカイブを研究・開発しています。空間体験とデータをWeb技術で結び、人と情報が新たにつながるインタラクティブシステムを制作しています。',
       projectsCta: 'プロジェクトを見る',
@@ -118,23 +120,24 @@ export const LOCALES = {
       nationalityLabel: '国籍',
       nationalityValue: '韓国',
     },
-    stats: [
-      { value: '2+', label: '受賞歴' },
-      { value: 'NHK', label: 'メディア掲載' },
-      { value: 'XR · Web · Data', label: '専門領域' },
-    ],
+    stats: {
+      projects: 'プロジェクト',
+      experiences: '経験・活動',
+      coreExpertise: '専門領域',
+    },
     sections: {
       experienceEyebrow: 'Experience & Awards',
       experience: '経験・受賞',
       selectedWork: 'Selected Work',
       projects: 'プロジェクト',
+      projectNote: '一部のプロジェクトは現在有効ではない場合があります。',
       contact: 'Contact',
       moreExperiences: 'もっと見る',
       collapseExperiences: '閉じる',
     },
     contact: {
-      title: '一緒に挑戦したいプロジェクトはありますか？',
-      body: 'XR・ARシステム、Webアプリケーション、データ可視化、アーカイブ基盤など、技術を活用したプロジェクトへの協力・研究提案をお待ちしています。',
+      title: '一緒に取り組んでみたい方は、\nいつでもお気軽にご連絡ください。',
+      body: 'XR・ARシステム、Webアプリケーション、データ可視化、アーカイブ基盤を中心に、研究・開発・協業のご相談を受け付けています。',
       email: 'メール',
       github: 'GitHub',
       linkedin: 'LinkedIn',

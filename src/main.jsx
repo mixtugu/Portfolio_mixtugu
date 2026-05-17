@@ -45,18 +45,29 @@ function App() {
   const [showAllExperiences, setShowAllExperiences] = useState(false);
   const [showAllProjects, setShowAllProjects] = useState(false);
   const [activeProjectPhotoIndexes, setActiveProjectPhotoIndexes] = useState({});
+  const [heroBgIndex, setHeroBgIndex] = useState(0);
   const t = LOCALES[locale];
   const currentSiteConfig = siteConfig[locale] ?? siteConfig.ko;
   const experienceGalleryItems = experienceItems.flatMap((experience) => {
     const photos = experience.photos?.length ? experience.photos : [experience.photo];
 
     return photos.map((photo, photoIndex) => ({
-      key: `${experience.title}-${photoIndex}`,
+      key: `${experience.title.ko}-${photoIndex}`,
       src: photo,
-      title: experience.title,
+      title: experience.title[locale],
     }));
   });
   const activeExperiencePhoto = experienceGalleryItems[activeExperiencePhotoIndex];
+
+  const heroBgImages = [
+    ...experienceItems.flatMap((e) => e.photos?.length ? e.photos : [e.photo]),
+    ...projectItems.flatMap((p) => p.photos?.length ? p.photos : [p.photo]),
+  ].filter((src, i, arr) => arr.indexOf(src) === i);
+  const stats = [
+    { value: `${projectItems.length}+`, label: t.stats.projects },
+    { value: `${experienceItems.length}+`, label: t.stats.experiences },
+    { value: 'XR · Web · Data', label: t.stats.coreExpertise },
+  ];
 
   const copyContactValue = async (key, value) => {
     if (navigator.clipboard?.writeText) {
@@ -101,11 +112,24 @@ function App() {
     return () => window.clearInterval(intervalId);
   }, [experienceGalleryItems.length]);
 
+  useEffect(() => {
+    if (heroBgImages.length <= 1) return undefined;
+    const intervalId = window.setInterval(() => {
+      setHeroBgIndex((i) => (i + 1) % heroBgImages.length);
+    }, 2800);
+    return () => window.clearInterval(intervalId);
+  }, [heroBgImages.length]);
+
   return (
     <main className="page">
       <Header locale={locale} onLocaleChange={setLocale} t={t} />
 
       <section id="top" className="hero">
+        <div className="heroBackground" aria-hidden="true">
+          {heroBgImages.map((src, i) => (
+            <img key={src} src={src} alt="" className={heroBgIndex === i ? 'active' : ''} />
+          ))}
+        </div>
         <div className="profilePanel" aria-label={t.profileLabel}>
           <div className="avatar">
             <img src="/images/face.jpg" alt="" />
@@ -143,21 +167,11 @@ function App() {
           </p>
           <h1>{t.hero.title}</h1>
           <p className="intro">{t.hero.intro}</p>
-          <div className="heroActions">
-            <a className="primaryButton" href="#projects">
-              {t.hero.projectsCta}
-              <ArrowUpRight size={18} />
-            </a>
-            <a className="secondaryButton" href={`mailto:${siteConfig.contact.email}`}>
-              <Mail size={18} />
-              {t.hero.contactCta}
-            </a>
-          </div>
         </div>
       </section>
 
       <section className="stats" aria-label={t.statsLabel}>
-        {t.stats.map((stat) => (
+        {stats.map((stat) => (
           <article key={stat.label}>
             <strong>{stat.value}</strong>
             <span>{stat.label}</span>
@@ -197,7 +211,7 @@ function App() {
         <div>
           <div className={`experienceList ${showAllExperiences ? 'expanded' : 'collapsed'}`}>
             {experienceItems.map((experience) => (
-              <article className="experienceCard" key={`${experience.title}-${experience.date}`}>
+              <article className="experienceCard" key={`${experience.title.ko}-${experience.date}`}>
                 <img src={experience.photo} alt="" />
                 <div className="experienceCardBody">
                   <div className="experienceCardHeader">
@@ -211,9 +225,9 @@ function App() {
                           </span>
                         )}
                       </div>
-                      <h3>{experience.title}</h3>
+                      <h3>{experience.title[locale]}</h3>
                     </div>
-                    {experience.projectLink ? (
+                    {/* {experience.projectLink ? (
                       <a
                         className="relatedProjectButton"
                         href={experience.projectLink}
@@ -226,9 +240,9 @@ function App() {
                       <button className="relatedProjectButton" disabled type="button">
                         <ArrowUpRight size={16} />
                       </button>
-                    )}
+                    )} */}
                   </div>
-                  <p>{experience.description}</p>
+                  <p>{experience.description[locale]}</p>
                   <div className="tags">
                     {experience.stack.map((item) => (
                       <TechTag key={item} stackId={item} />
@@ -257,12 +271,13 @@ function App() {
             {t.sections.selectedWork}
           </p>
           <h2>{t.sections.projects}</h2>
+          <p className="sectionNote">{t.sections.projectNote}</p>
         </div>
         <div className={`projectGrid ${showAllProjects ? 'expanded' : 'collapsed'}`}>
           {projectItems.map((project) => (
-            <article className="projectCard" key={`${project.title}-${project.date}`}>
+            <article className="projectCard" key={`${project.title.ko}-${project.date}`}>
               {(() => {
-                const projectKey = `${project.title}-${project.date}`;
+                const projectKey = `${project.title.ko}-${project.date}`;
                 const photos = project.photos?.length ? project.photos : [project.photo];
                 const activePhotoIndex = activeProjectPhotoIndexes[projectKey] ?? 0;
                 const activePhoto = photos[activePhotoIndex] ?? project.photo;
@@ -274,7 +289,7 @@ function App() {
                       <div className="projectPhotoGrid">
                         {photos.map((photo, index) => (
                           <button
-                            aria-label={`Show ${project.title} image ${index + 1}`}
+                            aria-label={`Show ${project.title.ko} image ${index + 1}`}
                             aria-pressed={activePhotoIndex === index}
                             className={activePhotoIndex === index ? 'active' : ''}
                             key={photo}
@@ -293,7 +308,7 @@ function App() {
                 <div className="projectCardHeader">
                   <div>
                     <time dateTime={project.date}>{project.date}</time>
-                    <h3>{project.title}</h3>
+                    <h3>{project.title[locale]}</h3>
                   </div>
                   {project.link ? (
                     <a className="projectLinkButton" href={project.link} rel="noreferrer" target="_blank">
@@ -305,7 +320,7 @@ function App() {
                     </button>
                   )}
                 </div>
-                <p>{project.description}</p>
+                <p>{project.description[locale]}</p>
                 <div className="tags">
                   {project.stack.map((item) => (
                     <TechTag key={item} stackId={item} />
@@ -354,10 +369,14 @@ function App() {
             </button>
           </div>
           <div className="socials">
-            <a href={`mailto:${siteConfig.contact.email}`} aria-label={t.contact.email}>
+            <button
+              aria-label="Copy email address"
+              onClick={() => copyContactValue('email', siteConfig.contact.email)}
+              type="button"
+            >
               <Mail size={20} />
-            </a>
-            <a href="https://github.com/" aria-label={t.contact.github}>
+            </button>
+            <a href="https://github.com/mixtugu" aria-label={t.contact.github} rel="noreferrer" target="_blank">
               <Github size={20} />
             </a>
           </div>
