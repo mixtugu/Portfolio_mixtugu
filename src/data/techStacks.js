@@ -1,9 +1,13 @@
-import { MdDevices, MdDesignServices } from 'react-icons/md';
+import { MdDevices, MdDesignServices, MdSecurity } from 'react-icons/md';
 import {
+  SiAndroid,
+  SiCesium,
   SiCss,
   SiGooglegemini,
+  SiHuggingface,
   SiIos,
   SiJavascript,
+  SiMysql,
   SiNextdotjs,
   SiNodedotjs,
   SiOpenai,
@@ -12,10 +16,14 @@ import {
   SiReact,
   SiReactquery,
   SiRender,
+  SiScikitlearn,
   SiSocketdotio,
+  SiSpringboot,
   SiSupabase,
   SiSwift,
+  SiTailwindcss,
   SiThreedotjs,
+  SiThymeleaf,
   SiTypescript,
   SiUnity,
   SiVercel,
@@ -46,6 +54,56 @@ export const techStacks = {
     name: 'CSS',
     color: '#1572b6',
     Icon: SiCss,
+  },
+  tailwindcss: {
+    name: 'Tailwind CSS',
+    color: '#06b6d4',
+    Icon: SiTailwindcss,
+  },
+  thymeleaf: {
+    name: 'Thymeleaf',
+    color: '#005f0f',
+    Icon: SiThymeleaf,
+  },
+  android: {
+    name: 'Android',
+    color: '#3ddc84',
+    Icon: SiAndroid,
+  },
+  huggingface: {
+    name: 'Hugging Face',
+    color: '#ffcc4d',
+    Icon: SiHuggingface,
+  },
+  springboot: {
+    name: 'Spring Boot',
+    color: '#6db33f',
+    Icon: SiSpringboot,
+  },
+  mysql: {
+    name: 'MySQL',
+    color: '#4479a1',
+    Icon: SiMysql,
+  },
+  machineLearning: {
+    name: 'Machine Learning',
+    color: '#f7931e',
+    Icon: SiScikitlearn,
+  },
+  mitre: {
+    name: 'MITRE',
+    color: '#c41230',
+    Icon: MdSecurity,
+  },
+  cesiumjs: {
+    name: 'CesiumJS',
+    color: '#6cadde',
+    Icon: SiCesium,
+  },
+  arjs: {
+    name: 'AR.js',
+    color: '#39c5bb',
+    Icon: MdDevices,
   },
   responsiveUi: {
     name: 'Responsive UI',

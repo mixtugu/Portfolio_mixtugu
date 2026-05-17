@@ -419,10 +419,61 @@ h3 {
 /* ── Project Grid ─────────────────────────────────────────  */
 
 .projectGrid {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 18px;
   margin-top: 32px;
+}
+
+.projectGrid.collapsed {
+  max-height: 720px;
+  overflow: hidden;
+}
+
+.projectGrid.expanded {
+  max-height: none;
+}
+
+.projectGrid.collapsed::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 96px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0), var(--color-bg));
+  pointer-events: none;
+  content: "";
+}
+
+.projectToggleButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: max-content;
+  min-height: 44px;
+  margin: 20px auto 0;
+  border: 1px solid var(--color-accent);
+  border-radius: 10px;
+  padding: 0 18px;
+  color: var(--color-dark);
+  background: #fff;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 800;
+}
+
+.projectToggleButton.sticky {
+  position: sticky;
+  bottom: 24px;
+  z-index: 2;
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.14);
+}
+
+.projectToggleButton:hover,
+.projectToggleButton:focus-visible {
+  background: var(--color-accent-soft);
+  outline: 0;
 }
 
 .projectCard {
@@ -440,12 +491,52 @@ h3 {
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
 }
 
-.projectCard img {
+.projectPhoto {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  background: var(--color-bg-alt);
+}
+
+.projectPhoto > img {
   width: 100%;
   aspect-ratio: 16 / 10;
   object-fit: cover;
   display: block;
+  border-radius: 8px;
   background: var(--color-accent-soft);
+}
+
+.projectPhotoGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(42px, 42px));
+  gap: 6px;
+}
+
+.projectPhotoGrid button {
+  overflow: hidden;
+  aspect-ratio: 1;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  padding: 0;
+  background: #fff;
+  cursor: pointer;
+  opacity: 0.62;
+}
+
+.projectPhotoGrid button.active,
+.projectPhotoGrid button:hover,
+.projectPhotoGrid button:focus-visible {
+  border-color: var(--color-accent);
+  opacity: 1;
+  outline: 0;
+}
+
+.projectPhotoGrid img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
 }
 
 .projectCardBody {
@@ -453,6 +544,32 @@ h3 {
   flex-direction: column;
   gap: 8px;
   padding: 18px 20px 20px;
+}
+
+.projectCardHeader {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: start;
+}
+
+.projectLinkButton {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 1px solid var(--color-accent);
+  border-radius: 8px;
+  color: var(--color-dark);
+  background: #fff;
+  cursor: pointer;
+}
+
+.projectLinkButton:disabled {
+  border-color: var(--color-border);
+  color: var(--color-muted);
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 
 .projectCard time {
@@ -933,6 +1050,10 @@ h3 {
     min-height: auto;
     max-height: 220px;
     height: auto;
+  }
+
+  .projectGrid.collapsed {
+    max-height: 560px;
   }
 
   .stats,

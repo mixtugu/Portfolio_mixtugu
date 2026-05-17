@@ -43,6 +43,8 @@ function App() {
   const [copiedContact, setCopiedContact] = useState('');
   const [activeExperiencePhotoIndex, setActiveExperiencePhotoIndex] = useState(0);
   const [showAllExperiences, setShowAllExperiences] = useState(false);
+  const [showAllProjects, setShowAllProjects] = useState(false);
+  const [activeProjectPhotoIndexes, setActiveProjectPhotoIndexes] = useState({});
   const t = LOCALES[locale];
   const currentSiteConfig = siteConfig[locale] ?? siteConfig.ko;
   const experienceGalleryItems = experienceItems.flatMap((experience) => {
@@ -73,6 +75,12 @@ function App() {
 
     setCopiedContact(key);
     window.setTimeout(() => setCopiedContact(''), 1400);
+  };
+  const selectProjectPhoto = (projectKey, photoIndex) => {
+    setActiveProjectPhotoIndexes((currentIndexes) => ({
+      ...currentIndexes,
+      [projectKey]: photoIndex,
+    }));
   };
 
   useEffect(() => {
@@ -250,13 +258,53 @@ function App() {
           </p>
           <h2>{t.sections.projects}</h2>
         </div>
-        <div className="projectGrid">
+        <div className={`projectGrid ${showAllProjects ? 'expanded' : 'collapsed'}`}>
           {projectItems.map((project) => (
             <article className="projectCard" key={`${project.title}-${project.date}`}>
-              <img src={project.photo} alt="" />
+              {(() => {
+                const projectKey = `${project.title}-${project.date}`;
+                const photos = project.photos?.length ? project.photos : [project.photo];
+                const activePhotoIndex = activeProjectPhotoIndexes[projectKey] ?? 0;
+                const activePhoto = photos[activePhotoIndex] ?? project.photo;
+
+                return (
+                  <div className="projectPhoto">
+                    <img src={activePhoto} alt="" />
+                    {photos.length > 1 && (
+                      <div className="projectPhotoGrid">
+                        {photos.map((photo, index) => (
+                          <button
+                            aria-label={`Show ${project.title} image ${index + 1}`}
+                            aria-pressed={activePhotoIndex === index}
+                            className={activePhotoIndex === index ? 'active' : ''}
+                            key={photo}
+                            onClick={() => selectProjectPhoto(projectKey, index)}
+                            type="button"
+                          >
+                            <img src={photo} alt="" />
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
               <div className="projectCardBody">
-                <time dateTime={project.date}>{project.date}</time>
-                <h3>{project.title}</h3>
+                <div className="projectCardHeader">
+                  <div>
+                    <time dateTime={project.date}>{project.date}</time>
+                    <h3>{project.title}</h3>
+                  </div>
+                  {project.link ? (
+                    <a className="projectLinkButton" href={project.link} rel="noreferrer" target="_blank">
+                      <ArrowUpRight size={16} />
+                    </a>
+                  ) : (
+                    <button className="projectLinkButton" disabled type="button">
+                      <ArrowUpRight size={16} />
+                    </button>
+                  )}
+                </div>
                 <p>{project.description}</p>
                 <div className="tags">
                   {project.stack.map((item) => (
@@ -267,6 +315,15 @@ function App() {
             </article>
           ))}
         </div>
+        {projectItems.length > 1 && (
+          <button
+            className={`projectToggleButton ${showAllProjects ? 'sticky' : ''}`}
+            onClick={() => setShowAllProjects((currentValue) => !currentValue)}
+            type="button"
+          >
+            {showAllProjects ? t.sections.collapseExperiences : t.sections.moreExperiences}
+          </button>
+        )}
       </section>
 
       <section id="contact" className="contact">
