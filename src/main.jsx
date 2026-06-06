@@ -14,6 +14,7 @@ import {
   Server,
   Sparkles,
   Trophy,
+  X,
 } from 'lucide-react';
 import { experienceItems } from './data/experienceItems';
 import { LOCALES } from './data/locales';
@@ -45,6 +46,9 @@ function App() {
   const [showAllExperiences, setShowAllExperiences] = useState(false);
   const [showAllProjects, setShowAllProjects] = useState(false);
   const [activeProjectPhotoIndexes, setActiveProjectPhotoIndexes] = useState({});
+  const [activeExperiencePhotoIndexes, setActiveExperiencePhotoIndexes] = useState({});
+  const [selectedProjectKey, setSelectedProjectKey] = useState('');
+  const [selectedExperienceKey, setSelectedExperienceKey] = useState('');
   const [heroBgIndex, setHeroBgIndex] = useState(0);
   const t = LOCALES[locale];
   const currentSiteConfig = siteConfig[locale] ?? siteConfig.ko;
@@ -58,6 +62,23 @@ function App() {
     }));
   });
   const activeExperiencePhoto = experienceGalleryItems[activeExperiencePhotoIndex];
+  const selectedProject = projectItems.find((project) => (
+    `${project.title.ko}-${project.date}` === selectedProjectKey
+  ));
+  const selectedProjectPhotos = selectedProject
+    ? (selectedProject.photos?.length ? selectedProject.photos : [selectedProject.photo])
+    : [];
+  const selectedProjectPhotoIndex = activeProjectPhotoIndexes[selectedProjectKey] ?? 0;
+  const selectedProjectPhoto = selectedProjectPhotos[selectedProjectPhotoIndex] ?? selectedProject?.photo;
+  const selectedExperience = experienceItems.find((experience) => (
+    `${experience.title.ko}-${experience.date}` === selectedExperienceKey
+  ));
+  const selectedExperiencePhotos = selectedExperience
+    ? (selectedExperience.photos?.length ? selectedExperience.photos : [selectedExperience.photo])
+    : [];
+  const selectedExperiencePhotoIndex = activeExperiencePhotoIndexes[selectedExperienceKey] ?? 0;
+  const selectedExperiencePhoto = selectedExperiencePhotos[selectedExperiencePhotoIndex]
+    ?? selectedExperience?.photo;
 
   const heroBgImages = [
     ...experienceItems.flatMap((e) => e.photos?.length ? e.photos : [e.photo]),
@@ -93,6 +114,26 @@ function App() {
       [projectKey]: photoIndex,
     }));
   };
+  const selectExperiencePhoto = (experienceKey, photoIndex) => {
+    setActiveExperiencePhotoIndexes((currentIndexes) => ({
+      ...currentIndexes,
+      [experienceKey]: photoIndex,
+    }));
+  };
+  const openProjectModal = (projectKey) => {
+    setSelectedProjectKey(projectKey);
+  };
+
+  const closeProjectModal = () => {
+    setSelectedProjectKey('');
+  };
+  const openExperienceModal = (experienceKey) => {
+    setSelectedExperienceKey(experienceKey);
+  };
+
+  const closeExperienceModal = () => {
+    setSelectedExperienceKey('');
+  };
 
   useEffect(() => {
     document.documentElement.lang = locale;
@@ -119,6 +160,28 @@ function App() {
     }, 2800);
     return () => window.clearInterval(intervalId);
   }, [heroBgImages.length]);
+
+  useEffect(() => {
+    if (!selectedProject && !selectedExperience) {
+      return undefined;
+    }
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        closeProjectModal();
+        closeExperienceModal();
+      }
+    };
+    const originalOverflow = document.body.style.overflow;
+
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [selectedProject, selectedExperience]);
 
   return (
     <main className="page">
@@ -211,7 +274,22 @@ function App() {
         <div>
           <div className={`experienceList ${showAllExperiences ? 'expanded' : 'collapsed'}`}>
             {experienceItems.map((experience) => (
-              <article className="experienceCard" key={`${experience.title.ko}-${experience.date}`}>
+              <article
+                className="experienceCard"
+                key={`${experience.title.ko}-${experience.date}`}
+                onClick={() => openExperienceModal(`${experience.title.ko}-${experience.date}`)}
+                onKeyDown={(event) => {
+                  if (event.target !== event.currentTarget) {
+                    return;
+                  }
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    openExperienceModal(`${experience.title.ko}-${experience.date}`);
+                  }
+                }}
+                role="button"
+                tabIndex={0}
+              >
                 <img src={experience.photo} alt="" />
                 <div className="experienceCardBody">
                   <div className="experienceCardHeader">
@@ -264,6 +342,64 @@ function App() {
         </div>
       </section>
 
+      {selectedExperience && (
+        <div
+          aria-labelledby="experienceModalTitle"
+          aria-modal="true"
+          className="projectModalOverlay"
+          onClick={closeExperienceModal}
+          role="dialog"
+        >
+          <article className="projectModal experienceModal" onClick={(event) => event.stopPropagation()}>
+            <button
+              aria-label="Close experience popup"
+              className="projectModalClose"
+              onClick={closeExperienceModal}
+              type="button"
+            >
+              <X size={18} />
+            </button>
+            <div className="projectModalMedia">
+              <img src={selectedExperiencePhoto} alt="" />
+              {selectedExperiencePhotos.length > 1 && (
+                <div className="projectPhotoGrid modalPhotoGrid">
+                  {selectedExperiencePhotos.map((photo, index) => (
+                    <button
+                      aria-label={`Show ${selectedExperience.title.ko} image ${index + 1}`}
+                      aria-pressed={selectedExperiencePhotoIndex === index}
+                      className={selectedExperiencePhotoIndex === index ? 'active' : ''}
+                      key={photo}
+                      onClick={() => selectExperiencePhoto(selectedExperienceKey, index)}
+                      type="button"
+                    >
+                      <img src={photo} alt="" />
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div className="projectModalBody">
+              <div className="experienceMetaLine">
+                <time dateTime={selectedExperience.date}>{selectedExperience.date}</time>
+                {selectedExperience.isAwarded && (
+                  <span className="awardBadge">
+                    <Trophy aria-hidden="true" size={14} />
+                    {selectedExperience.awardLabel}
+                  </span>
+                )}
+              </div>
+              <h3 id="experienceModalTitle">{selectedExperience.title[locale]}</h3>
+              <p>{selectedExperience.description[locale]}</p>
+              <div className="tags">
+                {selectedExperience.stack.map((item) => (
+                  <TechTag key={item} stackId={item} />
+                ))}
+              </div>
+            </div>
+          </article>
+        </div>
+      )}
+
       <section id="projects" className="section">
         <div className="sectionHeader">
           <p className="eyebrow">
@@ -275,7 +411,22 @@ function App() {
         </div>
         <div className={`projectGrid ${showAllProjects ? 'expanded' : 'collapsed'}`}>
           {projectItems.map((project) => (
-            <article className="projectCard" key={`${project.title.ko}-${project.date}`}>
+            <article
+              className="projectCard"
+              key={`${project.title.ko}-${project.date}`}
+              onClick={() => openProjectModal(`${project.title.ko}-${project.date}`)}
+              onKeyDown={(event) => {
+                if (event.target !== event.currentTarget) {
+                  return;
+                }
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault();
+                  openProjectModal(`${project.title.ko}-${project.date}`);
+                }
+              }}
+              role="button"
+              tabIndex={0}
+            >
               {(() => {
                 const projectKey = `${project.title.ko}-${project.date}`;
                 const photos = project.photos?.length ? project.photos : [project.photo];
@@ -293,7 +444,10 @@ function App() {
                             aria-pressed={activePhotoIndex === index}
                             className={activePhotoIndex === index ? 'active' : ''}
                             key={photo}
-                            onClick={() => selectProjectPhoto(projectKey, index)}
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              selectProjectPhoto(projectKey, index);
+                            }}
                             type="button"
                           >
                             <img src={photo} alt="" />
@@ -311,11 +465,22 @@ function App() {
                     <h3>{project.title[locale]}</h3>
                   </div>
                   {project.link ? (
-                    <a className="projectLinkButton" href={project.link} rel="noreferrer" target="_blank">
+                    <a
+                      className="projectLinkButton"
+                      href={project.link}
+                      onClick={(event) => event.stopPropagation()}
+                      rel="noreferrer"
+                      target="_blank"
+                    >
                       <ArrowUpRight size={16} />
                     </a>
                   ) : (
-                    <button className="projectLinkButton" disabled type="button">
+                    <button
+                      className="projectLinkButton"
+                      disabled
+                      onClick={(event) => event.stopPropagation()}
+                      type="button"
+                    >
                       <ArrowUpRight size={16} />
                     </button>
                   )}
@@ -340,6 +505,62 @@ function App() {
           </button>
         )}
       </section>
+
+      {selectedProject && (
+        <div
+          aria-labelledby="projectModalTitle"
+          aria-modal="true"
+          className="projectModalOverlay"
+          onClick={closeProjectModal}
+          role="dialog"
+        >
+          <article className="projectModal" onClick={(event) => event.stopPropagation()}>
+            <button
+              aria-label="Close project popup"
+              className="projectModalClose"
+              onClick={closeProjectModal}
+              type="button"
+            >
+              <X size={18} />
+            </button>
+            <div className="projectModalMedia">
+              <img src={selectedProjectPhoto} alt="" />
+              {selectedProjectPhotos.length > 1 && (
+                <div className="projectPhotoGrid modalPhotoGrid">
+                  {selectedProjectPhotos.map((photo, index) => (
+                    <button
+                      aria-label={`Show ${selectedProject.title.ko} image ${index + 1}`}
+                      aria-pressed={selectedProjectPhotoIndex === index}
+                      className={selectedProjectPhotoIndex === index ? 'active' : ''}
+                      key={photo}
+                      onClick={() => selectProjectPhoto(selectedProjectKey, index)}
+                      type="button"
+                    >
+                      <img src={photo} alt="" />
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div className="projectModalBody">
+              <time dateTime={selectedProject.date}>{selectedProject.date}</time>
+              <h3 id="projectModalTitle">{selectedProject.title[locale]}</h3>
+              <p>{selectedProject.description[locale]}</p>
+              <div className="tags">
+                {selectedProject.stack.map((item) => (
+                  <TechTag key={item} stackId={item} />
+                ))}
+              </div>
+              {selectedProject.link && (
+                <a className="projectModalLink" href={selectedProject.link} rel="noreferrer" target="_blank">
+                  <span>{t.sections.projects}</span>
+                  <ArrowUpRight size={16} />
+                </a>
+              )}
+            </div>
+          </article>
+        </div>
+      )}
 
       <section id="contact" className="contact">
         <div>

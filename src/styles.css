@@ -540,12 +540,19 @@ h3 {
   border: 1px solid var(--color-border);
   border-radius: 12px;
   background: #fff;
+  cursor: zoom-in;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.projectCard:hover {
+.projectCard:hover,
+.projectCard:focus-visible {
   transform: translateY(-4px);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+}
+
+.projectCard:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--color-accent) 34%, transparent);
+  outline-offset: 4px;
 }
 
 .projectPhoto {
@@ -647,6 +654,125 @@ h3 {
   color: var(--color-muted);
   font-size: 0.875rem;
   line-height: 1.65;
+}
+
+.projectModalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: grid;
+  place-items: center;
+  padding: clamp(16px, 4vw, 48px);
+  background: rgba(15, 23, 42, 0.58);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.projectModal {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+  width: min(1040px, 100%);
+  max-height: min(760px, 90vh);
+  overflow: auto;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 24px 80px rgba(15, 23, 42, 0.32);
+}
+
+.projectModalClose {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 1;
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  color: var(--color-dark);
+  background: rgba(255, 255, 255, 0.92);
+  cursor: pointer;
+}
+
+.projectModalClose:hover,
+.projectModalClose:focus-visible {
+  background: var(--color-accent-soft);
+  outline: 0;
+}
+
+.projectModalMedia {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  padding: 18px;
+  background: var(--color-bg-alt);
+}
+
+.projectModalMedia > img {
+  width: 100%;
+  max-height: 62vh;
+  display: block;
+  border-radius: 8px;
+  object-fit: contain;
+  background: #fff;
+}
+
+.modalPhotoGrid {
+  grid-template-columns: repeat(auto-fill, minmax(52px, 52px));
+}
+
+.projectModalBody {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: clamp(26px, 4vw, 42px);
+}
+
+.projectModalBody time {
+  color: var(--color-accent);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.projectModalBody h3 {
+  margin: 0;
+  padding-right: 36px;
+  font-size: clamp(1.45rem, 3vw, 2.3rem);
+  line-height: 1.18;
+}
+
+.projectModalBody p {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 0.98rem;
+  line-height: 1.75;
+}
+
+.projectModalLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: max-content;
+  min-height: 42px;
+  margin-top: auto;
+  border: 1px solid var(--color-accent);
+  border-radius: 8px;
+  padding: 0 14px;
+  color: var(--color-dark);
+  background: #fff;
+  font-weight: 800;
+}
+
+.projectModalLink:hover,
+.projectModalLink:focus-visible {
+  background: var(--color-accent-soft);
+  outline: 0;
 }
 
 /* ── Tags ────────────────────────────────────────────────── */
@@ -823,12 +949,19 @@ h3 {
   border: 1px solid var(--color-border);
   border-radius: 12px;
   background: #fff;
+  cursor: zoom-in;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.experienceCard:hover {
+.experienceCard:hover,
+.experienceCard:focus-visible {
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.experienceCard:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--color-accent) 34%, transparent);
+  outline-offset: 4px;
 }
 
 .experienceCard img {
@@ -862,6 +995,10 @@ h3 {
   gap: 8px;
   align-items: center;
   margin-bottom: 6px;
+}
+
+.projectModalBody > .experienceMetaLine {
+  margin-bottom: 0;
 }
 
 .relatedProjectButton {
@@ -1144,6 +1281,22 @@ h3 {
     grid-template-columns: 1fr;
   }
 
+  .projectModal {
+    grid-template-columns: 1fr;
+  }
+
+  .projectModalMedia > img {
+    max-height: 44vh;
+  }
+
+  .projectModalBody {
+    padding: 24px;
+  }
+
+  .projectModalBody h3 {
+    padding-right: 32px;
+  }
+
   .stats article {
     border-right: 1px solid var(--color-border);
     border-bottom: 0;
@@ -1233,6 +1386,26 @@ h3 {
 
   .primaryButton,
   .secondaryButton {
+    width: 100%;
+  }
+
+  .projectModalOverlay {
+    padding: 10px;
+  }
+
+  .projectModal {
+    max-height: 92vh;
+  }
+
+  .projectModalMedia {
+    padding: 10px;
+  }
+
+  .projectModalBody {
+    padding: 20px;
+  }
+
+  .projectModalLink {
     width: 100%;
   }
 }
