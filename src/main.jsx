@@ -19,7 +19,7 @@ import {
 import { experienceItems } from './data/experienceItems';
 import { LOCALES } from './data/locales';
 import { projectItems } from './data/projectItems';
-import { siteConfig } from './data/siteConfig';
+import { maskedContact, revealContact, siteConfig } from './data/siteConfig';
 import { techStacks } from './data/techStacks';
 import { Header } from './Header';
 import './styles.css';
@@ -42,6 +42,7 @@ function TechTag({ stackId }) {
 function App() {
   const [locale, setLocale] = useState('ko');
   const [copiedContact, setCopiedContact] = useState('');
+  const [revealedContacts, setRevealedContacts] = useState({});
   const [activeExperiencePhotoIndex, setActiveExperiencePhotoIndex] = useState(0);
   const [showAllExperiences, setShowAllExperiences] = useState(false);
   const [showAllProjects, setShowAllProjects] = useState(false);
@@ -90,7 +91,11 @@ function App() {
     { value: 'XR · Web · Data', label: t.stats.coreExpertise },
   ];
 
-  const copyContactValue = async (key, value) => {
+  const copyContactValue = async (key) => {
+    const value = revealContact(key);
+
+    setRevealedContacts((previous) => ({ ...previous, [key]: value }));
+
     if (navigator.clipboard?.writeText) {
       await navigator.clipboard.writeText(value);
     } else {
@@ -571,28 +576,28 @@ function App() {
         <div className="contactSide">
           <div className="contactDetails">
             <button
-              aria-label="Copy Japan phone number"
-              onClick={() => copyContactValue('japanPhone', siteConfig.contact.japanPhone)}
+              aria-label="Reveal and copy Japan phone number"
+              onClick={() => copyContactValue('japanPhone')}
               type="button"
             >
               <Phone size={18} />
-              <span>Japan: {siteConfig.contact.japanPhone}</span>
+              <span>Japan: {revealedContacts.japanPhone ?? maskedContact.japanPhone}</span>
               <small aria-hidden={copiedContact !== 'japanPhone'}>Copied</small>
             </button>
             <button
-              aria-label="Copy email address"
-              onClick={() => copyContactValue('email', siteConfig.contact.email)}
+              aria-label="Reveal and copy email address"
+              onClick={() => copyContactValue('email')}
               type="button"
             >
               <Mail size={18} />
-              <span>Email: {siteConfig.contact.email}</span>
+              <span>Email: {revealedContacts.email ?? maskedContact.email}</span>
               <small aria-hidden={copiedContact !== 'email'}>Copied</small>
             </button>
           </div>
           <div className="socials">
             <button
-              aria-label="Copy email address"
-              onClick={() => copyContactValue('email', siteConfig.contact.email)}
+              aria-label="Reveal and copy email address"
+              onClick={() => copyContactValue('email')}
               type="button"
             >
               <Mail size={20} />

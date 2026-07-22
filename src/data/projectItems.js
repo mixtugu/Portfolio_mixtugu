@@ -1,6 +1,23 @@
 export const projectItems = [
   {
     title: {
+      ko: 'mtgU (Meeting with YOU) — 일정 조율 서비스',
+      en: 'mtgU (Meeting with YOU) — Scheduling Coordination Service',
+      ja: 'mtgU (Meeting with YOU) — 日程調整サービス',
+    },
+    description: {
+      ko: 'mtgU는 "Meeting with YOU"의 줄임말로, 「Make time for people」를 슬로건으로 여러 사람이 함께 모일 수 있는 시간을 손쉽게 찾을 수 있도록 돕는 일정 조율 웹 서비스입니다. 참가자들의 가능한 시간을 모아 만날 수 있는 날짜를 한눈에 보여주고, 생성한 이벤트와 진행 중인 일정을 한 곳에서 관리할 수 있도록 구현하였습니다. Google 계정을 이용한 패스워드리스 로그인과 한국어·영어·일본어 다국어 대응을 지원합니다.',
+      en: 'mtgU stands for "Meeting with YOU" — a scheduling coordination web service built around the tagline "Make time for people", helping groups easily find times when everyone can meet. It aggregates participants\' availability to show possible meeting dates at a glance, and lets users manage created events and ongoing schedules in one place. Supports passwordless sign-in via Google accounts and a trilingual interface in Korean, English, and Japanese.',
+      ja: 'mtgUは「Meeting with YOU」の略で、「Make time for people」をスローガンに、複数人が集まれる時間を簡単に見つけられるようにする日程調整Webサービスです。参加者の空き時間を集約して候補日を一目で表示し、作成したイベントと進行中の予定を一箇所で管理できるよう実装しました。Googleアカウントによるパスワードレスログインと、韓国語・英語・日本語の多言語対応を備えています。',
+    },
+    photo: '/images/projects/mtgU.png',
+    photos: ['/images/projects/mtgU.png'],
+    date: '2026.07',
+    link: 'https://calender-app-azure.vercel.app/',
+    stack: ['react', 'typescript', 'nextjs', 'tailwindcss', 'supabase', 'vercel'],
+  },
+  {
+    title: {
       ko: '공기 렌즈',
       en: 'Kuuki Lens',
       ja: '空気レンズ',
