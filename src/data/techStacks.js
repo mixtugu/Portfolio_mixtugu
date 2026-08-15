@@ -140,6 +140,21 @@ export const techStacks = {
     color: '#050505',
     Icon: SiUnity,
   },
+  sony: {
+    name: 'Sony',
+    color: '#111827',
+    Icon: MdDevices,
+  },
+  xr: {
+    name: 'XR',
+    color: '#7c3aed',
+    Icon: MdDevices,
+  },
+  threeDGS: {
+    name: '3DGS',
+    color: '#e11d48',
+    Icon: MdDesignServices,
+  },
   nextjs: {
     name: 'Next.js',
     color: '#050505',

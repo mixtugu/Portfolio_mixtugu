@@ -1,6 +1,23 @@
 export const projectItems = [
   {
     title: {
+      ko: 'Sony 공간 재현 디스플레이 3DGS 뷰어',
+      en: '3DGS Viewer for Sony Spatial Reality Display',
+      ja: 'Sony 空間再現ディスプレイ向け3DGSビューア',
+    },
+    description: {
+      ko: 'Sony 공간 재현 디스플레이에서 3D Gaussian Splatting(3DGS) 데이터를 입체적으로 관찰할 수 있는 Unity 기반 뷰어 시스템을 개발하였습니다. 디스플레이의 시선·얼굴 위치 추적에 맞춰 렌더링 시점이 실시간으로 변화하도록 구성하여, 별도의 안경 없이도 화면 안의 3D 공간을 여러 각도에서 들여다보는 듯한 시각 경험을 구현하였습니다. 일반 영상이나 2D 모니터에서는 전달하기 어려운 깊이감과 시점 이동에 따른 공간 변화를 직접 확인할 수 있습니다.',
+      en: 'Developed a Unity-based viewer for exploring 3D Gaussian Splatting (3DGS) data on Sony’s Spatial Reality Display. The rendered viewpoint updates in real time according to the viewer’s tracked face and eye position, creating the impression of looking into a three-dimensional space from different angles without requiring glasses. The system makes depth and view-dependent spatial changes tangible in ways that are difficult to convey through conventional video or a 2D monitor.',
+      ja: 'Sonyの空間再現ディスプレイ上で3D Gaussian Splatting（3DGS）データを立体的に観察できるUnityベースのビューアシステムを開発しました。観察者の顔・視点位置のトラッキングに合わせてレンダリング視点がリアルタイムに変化し、専用メガネを使わずに画面内の3D空間をさまざまな角度から覗き込むような体験を実現しています。通常の動画や2Dモニターでは伝わりにくい奥行きと、視点移動に応じた空間の変化を直接確認できます。',
+    },
+    photo: '/images/projects/sonydisplay.png',
+    photos: ['/images/projects/sonydisplay.png'],
+    date: '2026.08.02',
+    link: '',
+    stack: ['unity', 'sony', 'xr', 'threeDGS'],
+  },
+  {
+    title: {
       ko: 'mtgU (Meeting with YOU) — 일정 조율 서비스',
       en: 'mtgU (Meeting with YOU) — Scheduling Coordination Service',
       ja: 'mtgU (Meeting with YOU) — 日程調整サービス',

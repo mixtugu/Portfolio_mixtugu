@@ -1,6 +1,25 @@
 export const experienceItems = [
   {
     title: {
+      ko: 'TEPIA 첨단기술관 2026 여름 이벤트 「AI 이야기책」 전시',
+      en: 'AI Story Book Exhibition at TEPIA Advanced Technology Gallery',
+      ja: 'TEPIA先端技術館 2026年夏イベント「AIものがたりブック」出展',
+    },
+    description: {
+      ko: 'TEPIA 첨단기술관의 2026년 여름 이벤트에서 공동 제작한 인터랙티브 작품 「AI 이야기책」을 전시하였습니다. 도쿄대학교 제작전에서 선보인 「사진으로 여는 무한책」의 사진 선택과 페이지 넘김 경험을 발전시킨 작품으로, 관람객이 사진을 차례로 선택하면 AI가 선택의 흐름을 바탕으로 자신만의 이야기를 생성합니다. 디지털 아카이브 학회지에 게재한 관계 기반 탐색 연구와 「Next Library Challenge 2030」 수상 시스템을 일반 관람객이 직접 체험할 수 있는 형태로 확장하였습니다.',
+      en: 'Exhibited the collaboratively developed interactive work “AI Story Book” at TEPIA Advanced Technology Gallery’s 2026 summer event. Evolving the photo-selection and page-turning experience of “Infinite Book: Opened Through Photographs,” the installation generates a unique AI-authored story from the sequence of photographs selected by each visitor. It translates the relationship-based exploration research published in the Journal of Digital Archive and the award-winning “Next Library Challenge 2030” system into a public, hands-on museum experience.',
+      ja: 'TEPIA先端技術館の2026年夏イベントにて、共同制作したインタラクティブ作品「AIものがたりブック」を出展しました。東京大学制作展で発表した「写真でひらく無限の本」の写真選択とページめくりの体験を発展させ、来場者が写真を順に選ぶと、その選択の流れをもとにAIが一人ひとりの物語を生成します。デジタルアーカイブ学会誌に掲載した関係基盤型探索の研究と、「Next Library Challenge 2030」受賞システムを、一般来場者が体験できる展示作品へと展開しました。',
+    },
+    photo: '/images/experiences/tepia.jpg',
+    photos: ['/images/experiences/tepia.jpg'],
+    date: '2026.07.14 ~ 2026.08.30',
+    isAwarded: false,
+    awardLabel: '',
+    projectLink: 'https://www.tepia.jp/exhibition/event/2026summer',
+    stack: ['react', 'typescript', 'nodejs', 'gemini', 'render'],
+  },
+  {
+    title: {
       ko: '디지털 아카이브 학회지 논문 게재 (제1저자 공저)',
       en: 'Paper Published in the Journal of Digital Archive (Co-author)',
       ja: 'デジタルアーカイブ学会誌 論文掲載（共著）',
