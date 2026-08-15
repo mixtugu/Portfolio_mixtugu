@@ -21,7 +21,6 @@ export const revealContact = (key) => {
 };
 
 export const siteConfig = {
-  birthDate: '2000.08.31',
   ko: {
     brandName: '이서정',
     schoolName: '도쿄대학교 학제정보학부',

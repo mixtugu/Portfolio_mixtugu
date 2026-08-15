@@ -1,18 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import {
   ArrowUpRight,
-  Calendar,
   Code2,
-  GraduationCap,
-  Globe2,
+  Cpu,
   Github,
+  Glasses,
+  Globe2,
+  GraduationCap,
+  Languages,
   Linkedin,
   Mail,
   MapPin,
   Phone,
   Server,
-  Sparkles,
   Trophy,
   X,
 } from 'lucide-react';
@@ -23,6 +24,8 @@ import { maskedContact, revealContact, siteConfig } from './data/siteConfig';
 import { techStacks } from './data/techStacks';
 import { Header } from './Header';
 import './styles.css';
+
+const EXPERIENCE_COLLAPSED_COUNT = 4;
 
 function TechTag({ stackId }) {
   const stack = techStacks[stackId] ?? {
@@ -50,7 +53,8 @@ function App() {
   const [activeExperiencePhotoIndexes, setActiveExperiencePhotoIndexes] = useState({});
   const [selectedProjectKey, setSelectedProjectKey] = useState('');
   const [selectedExperienceKey, setSelectedExperienceKey] = useState('');
-  const [heroBgIndex, setHeroBgIndex] = useState(0);
+  const heroRef = useRef(null);
+  const heroFrame = useRef(0);
   const t = LOCALES[locale];
   const currentSiteConfig = siteConfig[locale] ?? siteConfig.ko;
   const experienceGalleryItems = experienceItems.flatMap((experience) => {
@@ -81,14 +85,23 @@ function App() {
   const selectedExperiencePhoto = selectedExperiencePhotos[selectedExperiencePhotoIndex]
     ?? selectedExperience?.photo;
 
-  const heroBgImages = [
-    ...experienceItems.flatMap((e) => e.photos?.length ? e.photos : [e.photo]),
-    ...projectItems.flatMap((p) => p.photos?.length ? p.photos : [p.photo]),
-  ].filter((src, i, arr) => arr.indexOf(src) === i);
   const stats = [
     { value: `${projectItems.length}+`, label: t.stats.projects },
     { value: `${experienceItems.length}+`, label: t.stats.experiences },
     { value: 'XR · Web · Data', label: t.stats.coreExpertise },
+  ];
+  const showExperiencePeek = !showAllExperiences && experienceItems.length > EXPERIENCE_COLLAPSED_COUNT;
+  const experiencesToRender = showAllExperiences
+    ? experienceItems
+    : experienceItems.slice(0, EXPERIENCE_COLLAPSED_COUNT);
+  const heroFacts = [
+    { icon: MapPin, text: t.profile.location },
+    { icon: Globe2, text: t.profile.nationalityValue },
+    { icon: Cpu, text: 'IT' },
+    { icon: Code2, text: 'Web' },
+    { icon: Glasses, text: 'XR' },
+    { icon: GraduationCap, text: t.profile.degree },
+    ...t.profile.languages.map((language) => ({ icon: Languages, text: language })),
   ];
 
   const copyContactValue = async (key) => {
@@ -158,13 +171,28 @@ function App() {
     return () => window.clearInterval(intervalId);
   }, [experienceGalleryItems.length]);
 
-  useEffect(() => {
-    if (heroBgImages.length <= 1) return undefined;
-    const intervalId = window.setInterval(() => {
-      setHeroBgIndex((i) => (i + 1) % heroBgImages.length);
-    }, 2800);
-    return () => window.clearInterval(intervalId);
-  }, [heroBgImages.length]);
+  const handleHeroPointerMove = (event) => {
+    const el = heroRef.current;
+    if (!el) return;
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
+    const { clientX, clientY } = event;
+    if (heroFrame.current) return;
+    heroFrame.current = window.requestAnimationFrame(() => {
+      heroFrame.current = 0;
+      const rect = el.getBoundingClientRect();
+      const mx = (clientX - rect.left) / rect.width - 0.5;
+      const my = (clientY - rect.top) / rect.height - 0.5;
+      el.style.setProperty('--mx', mx.toFixed(3));
+      el.style.setProperty('--my', my.toFixed(3));
+    });
+  };
+
+  const handleHeroPointerLeave = () => {
+    const el = heroRef.current;
+    if (!el) return;
+    el.style.setProperty('--mx', '0');
+    el.style.setProperty('--my', '0');
+  };
 
   useEffect(() => {
     if (!selectedProject && !selectedExperience) {
@@ -192,49 +220,33 @@ function App() {
     <main className="page">
       <Header locale={locale} onLocaleChange={setLocale} t={t} />
 
-      <section id="top" className="hero">
-        <div className="heroBackground" aria-hidden="true">
-          {heroBgImages.map((src, i) => (
-            <img key={src} src={src} alt="" className={heroBgIndex === i ? 'active' : ''} />
-          ))}
-        </div>
-        <div className="profilePanel" aria-label={t.profileLabel}>
-          <div className="avatar">
-            <img src="/images/face.jpg" alt="" />
-          </div>
-          <div className="profileDetails">
-            <div>
-              <p className="profileName">{currentSiteConfig.brandName}</p>
-              <p className="profileRole">{t.profile.role}</p>
-            </div>
-            <div className="profileMeta">
-              <span>
-                <MapPin size={16} />
-                {t.profile.location}
-              </span>
-              <span>
-                <GraduationCap size={16} />
-                {currentSiteConfig.schoolName}
-              </span>
-              <span>
-                <Calendar size={16} />
-                {siteConfig.birthDate}
-              </span>
-              <span>
-                <Globe2 size={16} />
-                {t.profile.nationalityLabel}: {t.profile.nationalityValue}
-              </span>
-            </div>
-          </div>
+      <section
+        id="top"
+        className="hero"
+        ref={heroRef}
+        onMouseMove={handleHeroPointerMove}
+        onMouseLeave={handleHeroPointerLeave}
+      >
+        <div className="heroParticles" aria-hidden="true" />
+        <div className="heroScene" aria-hidden="true">
+          <span className="heroOrb heroOrb--1" />
+          <span className="heroOrb heroOrb--2" />
+          <span className="heroOrb heroOrb--3" />
+          <span className="heroGrid" />
+          <span className="heroRing" />
         </div>
 
         <div className="heroCopy">
-          <p className="eyebrow">
-            <Sparkles size={16} />
-            {t.hero.eyebrow}
-          </p>
-          <h1>{t.hero.title}</h1>
-          <p className="intro">{t.hero.intro}</p>
+          <h1 className="heroName">{currentSiteConfig.brandName}</h1>
+          <p className="heroRole">{t.profile.role}</p>
+          <ul className="heroFacts">
+            {heroFacts.map(({ icon: Icon, text }) => (
+              <li key={text}>
+                <Icon size={16} aria-hidden="true" />
+                {text}
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
@@ -277,10 +289,12 @@ function App() {
           )}
         </div>
         <div>
-          <div className={`experienceList ${showAllExperiences ? 'expanded' : 'collapsed'}`}>
-            {experienceItems.map((experience) => (
+          <div className="experienceList">
+            {experiencesToRender.map((experience, index) => (
               <article
-                className="experienceCard"
+                className={`experienceCard${
+                  showExperiencePeek && index === EXPERIENCE_COLLAPSED_COUNT - 1 ? ' peek' : ''
+                }`}
                 key={`${experience.title.ko}-${experience.date}`}
                 onClick={() => openExperienceModal(`${experience.title.ko}-${experience.date}`)}
                 onKeyDown={(event) => {

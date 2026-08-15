@@ -1,6 +1,7 @@
 export const LOCALES = {
   ko: {
     label: '한국어',
+    shortLabel: 'KO',
     navLabel: '주요 메뉴',
     profileLabel: '프로필 요약',
     statsLabel: '핵심 지표',
@@ -19,10 +20,12 @@ export const LOCALES = {
       contactCta: '연락하기',
     },
     profile: {
-      role: 'XR · Web · 데이터 엔지니어',
+      role: '도쿄대학교 학제정보학부 석사과정',
       location: '도쿄, 일본',
       nationalityLabel: '국적',
       nationalityValue: '대한민국',
+      degree: '도쿄대학 석사',
+      languages: ['일본어', '영어', '한국어'],
     },
     stats: {
       projects: '프로젝트',
@@ -49,6 +52,7 @@ export const LOCALES = {
   },
   en: {
     label: 'English',
+    shortLabel: 'EN',
     navLabel: 'Primary navigation',
     profileLabel: 'Profile summary',
     statsLabel: 'Key metrics',
@@ -67,10 +71,12 @@ export const LOCALES = {
       contactCta: 'Contact me',
     },
     profile: {
-      role: 'XR · Web · Data Engineer',
+      role: "Master's student, University of Tokyo (IIIS)",
       location: 'Tokyo, Japan',
       nationalityLabel: 'Nationality',
       nationalityValue: 'Republic of Korea',
+      degree: 'UTokyo MSc',
+      languages: ['Japanese', 'English', 'Korean'],
     },
     stats: {
       projects: 'Projects',
@@ -97,6 +103,7 @@ export const LOCALES = {
   },
   ja: {
     label: '日本語',
+    shortLabel: 'JP',
     navLabel: '主要ナビゲーション',
     profileLabel: 'プロフィール概要',
     statsLabel: '主要指標',
@@ -115,10 +122,12 @@ export const LOCALES = {
       contactCta: '連絡する',
     },
     profile: {
-      role: 'XR・Web・データエンジニア',
+      role: '東京大学 学際情報学府 修士課程',
       location: '東京、日本',
       nationalityLabel: '国籍',
       nationalityValue: '韓国',
+      degree: '東大 修士',
+      languages: ['日本語', '英語', '韓国語'],
     },
     stats: {
       projects: 'プロジェクト',
