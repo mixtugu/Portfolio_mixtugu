@@ -1,17 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import {
   ArrowUpRight,
   Code2,
-  Cpu,
   Github,
-  Glasses,
-  Globe2,
-  GraduationCap,
-  Languages,
-  Linkedin,
   Mail,
-  MapPin,
   Phone,
   Server,
   Trophy,
@@ -23,6 +16,7 @@ import { projectItems } from './data/projectItems';
 import { maskedContact, revealContact, siteConfig } from './data/siteConfig';
 import { techStacks } from './data/techStacks';
 import { Header } from './Header';
+import { ProfileHero } from './ProfileHero';
 import './styles.css';
 
 const EXPERIENCE_COLLAPSED_COUNT = 4;
@@ -53,8 +47,6 @@ function App() {
   const [activeExperiencePhotoIndexes, setActiveExperiencePhotoIndexes] = useState({});
   const [selectedProjectKey, setSelectedProjectKey] = useState('');
   const [selectedExperienceKey, setSelectedExperienceKey] = useState('');
-  const heroRef = useRef(null);
-  const heroFrame = useRef(0);
   const t = LOCALES[locale];
   const currentSiteConfig = siteConfig[locale] ?? siteConfig.ko;
   const experienceGalleryItems = experienceItems.flatMap((experience) => {
@@ -94,16 +86,6 @@ function App() {
   const experiencesToRender = showAllExperiences
     ? experienceItems
     : experienceItems.slice(0, EXPERIENCE_COLLAPSED_COUNT);
-  const heroFacts = [
-    { icon: MapPin, text: t.profile.location },
-    { icon: Globe2, text: t.profile.nationalityValue },
-    { icon: Cpu, text: 'IT' },
-    { icon: Code2, text: 'Web' },
-    { icon: Glasses, text: 'XR' },
-    { icon: GraduationCap, text: t.profile.degree },
-    ...t.profile.languages.map((language) => ({ icon: Languages, text: language })),
-  ];
-
   const copyContactValue = async (key) => {
     const value = revealContact(key);
 
@@ -171,29 +153,6 @@ function App() {
     return () => window.clearInterval(intervalId);
   }, [experienceGalleryItems.length]);
 
-  const handleHeroPointerMove = (event) => {
-    const el = heroRef.current;
-    if (!el) return;
-    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
-    const { clientX, clientY } = event;
-    if (heroFrame.current) return;
-    heroFrame.current = window.requestAnimationFrame(() => {
-      heroFrame.current = 0;
-      const rect = el.getBoundingClientRect();
-      const mx = (clientX - rect.left) / rect.width - 0.5;
-      const my = (clientY - rect.top) / rect.height - 0.5;
-      el.style.setProperty('--mx', mx.toFixed(3));
-      el.style.setProperty('--my', my.toFixed(3));
-    });
-  };
-
-  const handleHeroPointerLeave = () => {
-    const el = heroRef.current;
-    if (!el) return;
-    el.style.setProperty('--mx', '0');
-    el.style.setProperty('--my', '0');
-  };
-
   useEffect(() => {
     if (!selectedProject && !selectedExperience) {
       return undefined;
@@ -220,35 +179,7 @@ function App() {
     <main className="page">
       <Header locale={locale} onLocaleChange={setLocale} t={t} />
 
-      <section
-        id="top"
-        className="hero"
-        ref={heroRef}
-        onMouseMove={handleHeroPointerMove}
-        onMouseLeave={handleHeroPointerLeave}
-      >
-        <div className="heroParticles" aria-hidden="true" />
-        <div className="heroScene" aria-hidden="true">
-          <span className="heroOrb heroOrb--1" />
-          <span className="heroOrb heroOrb--2" />
-          <span className="heroOrb heroOrb--3" />
-          <span className="heroGrid" />
-          <span className="heroRing" />
-        </div>
-
-        <div className="heroCopy">
-          <h1 className="heroName">{currentSiteConfig.brandName}</h1>
-          <p className="heroRole">{t.profile.role}</p>
-          <ul className="heroFacts">
-            {heroFacts.map(({ icon: Icon, text }) => (
-              <li key={text}>
-                <Icon size={16} aria-hidden="true" />
-                {text}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
+      <ProfileHero locale={locale} t={t} name={currentSiteConfig.brandName} />
 
       <section className="stats" aria-label={t.statsLabel}>
         {stats.map((stat) => (
